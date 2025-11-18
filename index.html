@@ -13,6 +13,7 @@
         position: relative;
     }
 
+    /* FONDO ANIMADO DE ESTRELLAS */
     body::before {
         content: "";
         position: fixed;
@@ -29,8 +30,12 @@
         z-index: -1;
     }
 
-    @keyframes estrellas { from { transform: translateY(0); } to { transform: translateY(-300px); } }
+    @keyframes estrellas {
+        from { transform: translateY(0); }
+        to { transform: translateY(-300px); }
+    }
 
+    /* VISOR CON EFECTO DE BRILLO Y ZOOM */
     #visor {
         width: 400px;
         height: 300px;
@@ -55,7 +60,9 @@
         transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    .campo { margin-top: 20px; }
+    .campo {
+        margin-top: 20px;
+    }
 
     button {
         padding: 10px 20px;
@@ -68,13 +75,30 @@
         font-size: 16px;
     }
 
-    button:hover { background: #2980b9; }
+    button:hover {
+        background: #2980b9;
+    }
 
-    #btnTeAmo { background: #ff4d88; margin-left: 10px; }
-    #btnTeAmo:hover { background: #ff1a66; }
+    #btnTeAmo {
+        background: #ff4d88;
+        margin-left: 10px;
+    }
+    #btnTeAmo:hover {
+        background: #ff1a66;
+    }
 
-    #btnSorpresa { display: none; margin-top: 20px; background: gold; color: black; font-size: 18px; border-radius: 10px; padding: 12px 20px; }
+    /* BOTÓN SORPRESA (OCULTO) */
+    #btnSorpresa {
+        display: none;
+        margin-top: 20px;
+        background: gold;
+        color: black;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 12px 20px;
+    }
 
+    /* MENSAJE TE AMOOO */
     .te-amo {
         position: fixed;
         top: 40%;
@@ -85,10 +109,14 @@
         color: #ff1a75;
         opacity: 0;
         animation: aparecerDesaparecer 1.5s ease-out forwards;
-        text-shadow: 0 0 15px #ff5fa2, 0 0 30px #ff1a75, 0 0 50px #ff5fa2;
+        text-shadow: 
+            0 0 15px #ff5fa2,
+            0 0 30px #ff1a75,
+            0 0 50px #ff5fa2;
         pointer-events: none;
     }
 
+    /* LETRAS VOLANDO */
     .letra {
         position: fixed;
         font-size: 30px;
@@ -98,10 +126,19 @@
         pointer-events: none;
     }
 
-    @keyframes volar { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(-200px) rotate(360deg); } }
+    @keyframes volar {
+        0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+        100% { opacity: 0; transform: translateY(-200px) rotate(360deg); }
+    }
 
-    @keyframes aparecerDesaparecer { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } 60% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
+    @keyframes aparecerDesaparecer {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        60% { opacity: 1; }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+    }
 
+    /* CORAZONES FLOTANDO */
     .corazon {
         position: fixed;
         font-size: 25px;
@@ -110,8 +147,12 @@
         filter: drop-shadow(0 0 10px rgba(255, 0, 100, 0.8));
     }
 
-    @keyframes flotar { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-250px) scale(1.8); opacity: 0; } }
+    @keyframes flotar {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-250px) scale(1.8); opacity: 0; }
+    }
 
+    /* CORAZONES DESDE BORDES */
     .corazonBorde {
         position: fixed;
         font-size: 30px;
@@ -120,138 +161,165 @@
         filter: drop-shadow(0 0 12px pink);
     }
 
-    @keyframes flotarBorde { from { opacity: 1; } to { transform: translateY(-400px); opacity: 0; } }
+    @keyframes flotarBorde {
+        from { opacity: 1; }
+        to { transform: translateY(-400px); opacity: 0; }
+    }
 </style>
 </head>
 <body>
 
 <h2>Esta pagina es porque te AMOOO</h2>
 
+<!-- Música de fondo -->
 <audio id="musicaFondo" src="audio/musica_romantica.mp3" autoplay loop></audio>
 
+<!-- VISOR -->
 <div id="visor">
     <img id="imagenActual" src="img/foto1.png">
 </div>
 
+<!-- MENSAJE -->
 <div class="campo">
     <h3 id="mensajeActual"></h3>
 </div>
 
+<!-- AUDIO -->
 <div class="campo">
     <audio id="audioActual" controls></audio>
 </div>
 
+<!-- BOTONES -->
 <button id="btnSiguiente">Siguiente imagen</button>
 <button id="btnTeAmo">Te amo 💗</button>
+
 <button id="btnSorpresa">🌟 Mensaje secreto 🌟</button>
 
-<!-- Sonido del pato en base64 -->
-<audio id="sonidoPato">
-    <source src="data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAA..." type="audio/mpeg">
-</audio>
+<!-- SONIDO CORAZONES -->
+<audio id="sonidoCorazones" src="audio/corazon.mp3"></audio>
 
 <script>
-const imagenes = ["img/foto1.png","img/foto2.png","img/foto4.png"];
-const mensajes = ["Ella es la mujer que yo amo.","Estos somos los dos, ella sin maquillaje y siendo hermosa aun asi.","Te amo. Me haces demasiado feliz y amarte un gran arte."];
-const audios = ["audio/audio1.ogg","audio/audio2.ogg","audio/audio3.ogg"];
+    const imagenes = [
+        "img/foto1.png",
+        "img/foto2.png",
+        "img/foto4.png"
+    ];
 
-let index = 0;
-let contadorAmor = 0;
+    const mensajes = [
+        "Ella es la mujer que yo amo.",
+        "Estos somos los dos, ella sin maquillaje y siendo hermosa aun asi.",
+        "Te amo. Me haces demasiado feliz y amarte un gran arte."
+    ];
 
-function mostrar() {
-    const img = document.getElementById("imagenActual");
-    img.style.opacity = 0;
-    img.style.transform = "scale(0.9)";
-    setTimeout(() => {
-        img.src = imagenes[index];
-        document.getElementById("mensajeActual").innerText = mensajes[index];
-        document.getElementById("audioActual").src = audios[index];
-        img.style.opacity = 1;
-        img.style.transform = "scale(1)";
-    }, 200);
-}
+    const audios = [
+        "audio/audio1.ogg",
+        "audio/audio2.ogg",
+        "audio/audio3.ogg"
+    ];
 
-function mostrarTeAmo() {
-    const mensaje = document.createElement("div");
-    mensaje.className = "te-amo";
-    mensaje.textContent = "TE AMOOO";
-    document.body.appendChild(mensaje);
-    setTimeout(() => mensaje.remove(), 1500);
+    let index = 0;
+    let contadorAmor = 0;
 
-    lanzarLetras();
-    lanzarCorazones();
-    corazonesBordes();
-    reproducirPato();
-}
-
-function lanzarLetras() {
-    const letras = ["T","E"," ","A","M","O"];
-    for(let i=0;i<letras.length;i++){
-        const l=document.createElement("div");
-        l.className="letra";
-        l.textContent=letras[i];
-        l.style.left=(40+Math.random()*20)+"vw";
-        l.style.top="50vh";
-        document.body.appendChild(l);
-        setTimeout(()=>l.remove(),2000);
+    function mostrar() {
+        const img = document.getElementById("imagenActual");
+        img.style.opacity = 0;
+        img.style.transform = "scale(0.9)";
+        
+        setTimeout(() => {
+            img.src = imagenes[index];
+            document.getElementById("mensajeActual").innerText = mensajes[index];
+            document.getElementById("audioActual").src = audios[index];
+            img.style.opacity = 1;
+            img.style.transform = "scale(1)";
+        }, 200);
     }
-}
 
-function lanzarCorazones() {
-    const colores=["#ff4d88","#ff99cc","#ff3377","#ff1a8c","#ff66a3"];
-    for(let i=0;i<25;i++){
-        const corazon=document.createElement("div");
-        corazon.className="corazon";
-        corazon.textContent="❤️";
-        corazon.style.left=Math.random()*100+"vw";
-        corazon.style.top="85vh";
-        corazon.style.fontSize=(20+Math.random()*25)+"px";
-        corazon.style.color=colores[Math.floor(Math.random()*colores.length)];
-        corazon.style.animationDuration=(2+Math.random()*2)+"s";
-        document.body.appendChild(corazon);
-        setTimeout(()=>corazon.remove(),4000);
+    function mostrarTeAmo() {
+        const mensaje = document.createElement("div");
+        mensaje.className = "te-amo";
+        mensaje.textContent = "TE AMOOO";
+        document.body.appendChild(mensaje);
+        setTimeout(() => mensaje.remove(), 1500);
+
+        lanzarLetras();
     }
-}
 
-function corazonesBordes() {
-    const posiciones=["left","right"];
-    for(let i=0;i<10;i++){
-        const c=document.createElement("div");
-        c.className="corazonBorde";
-        c.textContent="💖";
-        const lado=posiciones[Math.floor(Math.random()*posiciones.length)];
-        c.style[lado]="0px";
-        c.style.top=Math.random()*100+"vh";
-        document.body.appendChild(c);
-        setTimeout(()=>c.remove(),5000);
+    function lanzarLetras() {
+        const letras = ["T", "E", " ", "A", "M", "O"];
+        for (let i = 0; i < letras.length; i++) {
+            const l = document.createElement("div");
+            l.className = "letra";
+            l.textContent = letras[i];
+            l.style.left = (40 + Math.random() * 20) + "vw";
+            l.style.top = "50vh";
+            document.body.appendChild(l);
+            setTimeout(() => l.remove(), 2000);
+        }
     }
-}
 
-function reproducirPato() {
-    const pato = document.getElementById("sonidoPato");
-    pato.pause(); // Pausa si estaba reproduciéndose
-    pato.currentTime = 0; // Reinicia
-    pato.play().catch(e => console.log("No se pudo reproducir el pato:", e));
-}
+    function lanzarCorazones() {
+        const colores = ["#ff4d88", "#ff99cc", "#ff3377", "#ff1a8c", "#ff66a3"];
+        for (let i = 0; i < 25; i++) {
+            const corazon = document.createElement("div");
+            corazon.className = "corazon";
+            corazon.textContent = "❤️";
+            corazon.style.left = Math.random() * 100 + "vw";
+            corazon.style.top = "85vh";
+            corazon.style.fontSize = (20 + Math.random() * 25) + "px";
+            corazon.style.color = colores[Math.floor(Math.random() * colores.length)];
+            corazon.style.animationDuration = (2 + Math.random() * 2) + "s";
+            document.body.appendChild(corazon);
+            setTimeout(() => corazon.remove(), 4000);
+        }
+    }
 
-// BOTONES
-document.getElementById("btnSiguiente").addEventListener("click", function(){
-    index=(index+1)%imagenes.length;
+    function corazonesBordes() {
+        const posiciones = ["left", "right"];
+        for (let i = 0; i < 10; i++) {
+            const c = document.createElement("div");
+            c.className = "corazonBorde";
+            c.textContent = "💖";
+            const lado = posiciones[Math.floor(Math.random() * posiciones.length)];
+            c.style[lado] = "0px";
+            c.style.top = Math.random() * 100 + "vh";
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 5000);
+        }
+    }
+
+    function reproducirSonido() {
+        const audio = document.getElementById("sonidoCorazones");
+        audio.currentTime = 0;
+        audio.play();
+    }
+
+    document.getElementById("btnSiguiente").addEventListener("click", function () {
+        index = (index + 1) % imagenes.length;
+        mostrar();
+        mostrarTeAmo();
+        lanzarCorazones();
+        corazonesBordes();
+        reproducirSonido();
+
+        contadorAmor++;
+        if (contadorAmor == 5) {
+            document.getElementById("btnSorpresa").style.display = "inline-block";
+        }
+    });
+
+    document.getElementById("btnTeAmo").addEventListener("click", function () {
+        mostrarTeAmo();
+        lanzarCorazones();
+        corazonesBordes();
+        reproducirSonido();
+    });
+
+    document.getElementById("btnSorpresa").addEventListener("click", function () {
+        alert("🌟 Sorpresa: Eres lo mejor que me ha pasado en la vida 🌟");
+    });
+
     mostrar();
-    mostrarTeAmo();
-    contadorAmor++;
-    if(contadorAmor===5){
-        document.getElementById("btnSorpresa").style.display="inline-block";
-    }
-});
-
-document.getElementById("btnTeAmo").addEventListener("click", mostrarTeAmo);
-
-document.getElementById("btnSorpresa").addEventListener("click",function(){
-    alert("🌟 Sorpresa: Eres lo mejor que me ha pasado en la vida 🌟");
-});
-
-mostrar();
 </script>
+
 </body>
 </html>
